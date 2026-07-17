@@ -1,0 +1,44 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+
+  docker:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Backend image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/backend:latest ./back
+
+      - name: Push Backend image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/backend:latest
+
+      - name: Build Frontend image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/frontend:latest ./front
+
+      - name: Push Frontend image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/frontend:latest
