@@ -10,13 +10,10 @@ permissions:
   packages: write
 
 jobs:
-
   docker:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -29,16 +26,16 @@ jobs:
 
       - name: Build Backend image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/backend:latest ./back
+          docker build -t ghcr.io/aissamnasri/p7-fsja-main/backend:latest ./back
 
       - name: Push Backend image
         run: |
-          docker push ghcr.io/${{ github.repository }}/backend:latest
+          docker push ghcr.io/aissamnasri/p7-fsja-main/backend:latest
 
       - name: Build Frontend image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/frontend:latest ./front
+          docker build -t ghcr.io/aissamnasri/p7-fsja-main/frontend:latest ./front
 
       - name: Push Frontend image
         run: |
-          docker push ghcr.io/${{ github.repository }}/frontend:latest
+          docker push ghcr.io/aissamnasri/p7-fsja-main/frontend:latest
