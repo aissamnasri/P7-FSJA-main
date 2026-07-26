@@ -1,10 +1,15 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
+// Karma configuration file
+// https://karma-runner.github.io/latest/config/configuration-file.html
 
 module.exports = function (config) {
   config.set({
     basePath: "",
-    frameworks: ["jasmine", "@angular-devkit/build-angular"],
+
+    frameworks: [
+      "jasmine",
+      "@angular-devkit/build-angular"
+    ],
+
     plugins: [
       require("karma-jasmine"),
       require("karma-chrome-launcher"),
@@ -12,31 +17,68 @@ module.exports = function (config) {
       require("karma-coverage"),
       require("@angular-devkit/build-angular/plugins/karma"),
     ],
+
     client: {
-      jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
-      },
-      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      jasmine: {},
+      clearContext: false,
     },
+
     jasmineHtmlReporter: {
-      suppressAll: true, // removes the duplicated traces
+      suppressAll: true,
     },
+
+    // ==========================================
+    // CODE COVERAGE
+    // ==========================================
     coverageReporter: {
-      dir: require("path").join(__dirname, "./coverage/microcrm"),
+      dir: require("path").join(
+        __dirname,
+        "./coverage/microcrm"
+      ),
+
       subdir: ".",
-      reporters: [{ type: "html" }, { type: "text-summary" }],
+
+      reporters: [
+        // Rapport HTML pour consultation locale
+        {
+          type: "html"
+        },
+
+        // Rapport LCOV utilisé par SonarQube
+        {
+          type: "lcovonly",
+          file: "lcov.info"
+        },
+
+        // Résumé affiché dans le terminal
+        {
+          type: "text-summary"
+        }
+      ],
     },
-    reporters: ["progress", "kjhtml"],
-    browsers: ["ChromeHeadlessNoSandbox", "ChromeHeadless", "Chrome"],
+
+    reporters: [
+      "progress",
+      "kjhtml"
+    ],
+
+    browsers: [
+      "ChromeHeadlessNoSandbox",
+      "ChromeHeadless",
+      "Chrome"
+    ],
+
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: "ChromeHeadless",
-        flags: ["--no-sandbox"],
+        flags: [
+          "--no-sandbox",
+          "--disable-gpu",
+          "--disable-dev-shm-usage"
+        ],
       },
     },
+
     restartOnFileChange: true,
   });
 };
